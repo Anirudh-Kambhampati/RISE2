@@ -1,13 +1,13 @@
-import _ from "lodash";
-import deepdash from "deepdash";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import Tree from "react-ui-tree";
+import _ from 'lodash';
+import deepdash from 'deepdash';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import Tree from 'react-ui-tree';
 
-import TreeNode from "./TreeNode";
+import TreeNode from './TreeNode';
 
-import "react-ui-tree/dist/react-ui-tree.css";
-import { setTreeData } from "../../redux/treeData/treeDataSlice";
+import 'react-ui-tree/dist/react-ui-tree.css';
+import { setTreeData } from '../../redux/treeData/treeDataSlice';
 
 deepdash(_);
 
@@ -29,22 +29,29 @@ const deleteFromTree = (newTree, id) => {
   [newTree].some(getNode);
 };
 
-const FolderTree = ({ treeData, handleClick, isAdmin=false, errorMsg="Provide treeData" }) => {
+const FolderTree = ({
+  treeData,
+  handleClick,
+  isAdmin = false,
+  errorMsg = 'Provide treeData',
+  disableRightClick = false,
+  disableFileAndFolderAddition = false,
+}) => {
   const dispatch = useDispatch();
   const [tree, setTree] = useState(treeData);
 
   useEffect(() => {
-    if(isAdmin){
+    if (isAdmin) {
       dispatch(setTreeData(_.cloneDeep(tree)));
     }
-  }, [dispatch, tree, isAdmin])
+  }, [dispatch, tree, isAdmin]);
 
   /*===============EVENT HANDLERS STARTS========================== */
   const handleRename = (id) => {
     const renameObj = _.findDeep(tree, (item) => item.id === id, {
-      childrenPath: "children",
+      childrenPath: 'children',
     });
-    const response = prompt("Please rename", renameObj.value.module);
+    const response = prompt('Please rename', renameObj.value.module);
     // ignore empty string
     if (!response) {
       return;
@@ -60,19 +67,19 @@ const FolderTree = ({ treeData, handleClick, isAdmin=false, errorMsg="Provide tr
               ...renameObj.value,
             }
           : item,
-      { childrenPath: "children" }
+      { childrenPath: 'children' }
     );
     updateTree(newTree[0]);
   };
 
   const handleDelete = (id) => {
     deleteFromTree(tree, id);
-    setTree(oldTree => ({...oldTree, ...tree}));
+    setTree((oldTree) => ({ ...oldTree, ...tree }));
   };
 
   const addItemToTree = (itemType, active) => {
     const newItem =
-      itemType === "folder"
+      itemType === 'folder'
         ? {
             id: `root-${Date.now()}`,
             module: `New ${itemType}`,
@@ -95,7 +102,7 @@ const FolderTree = ({ treeData, handleClick, isAdmin=false, errorMsg="Provide tr
   };
 
   const updateTree = (tree) => {
-    setTree(oldTree => ({...oldTree, ...tree}));
+    setTree((oldTree) => ({ ...oldTree, ...tree }));
   };
   /*===============EVENT HANDLERS ENDS========================== */
 
@@ -104,10 +111,12 @@ const FolderTree = ({ treeData, handleClick, isAdmin=false, errorMsg="Provide tr
     handleDelete,
     handleRename,
     handleClick,
+    disableRightClick,
+    disableFileAndFolderAddition,
   };
 
-  if(!treeData || !Object.keys(treeData).length){
-    return <div>{errorMsg}</div>
+  if (!treeData || !Object.keys(treeData).length) {
+    return <div>{errorMsg}</div>;
   }
 
   return (

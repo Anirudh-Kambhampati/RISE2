@@ -16,6 +16,8 @@ const TreeNode = ({
   addItemToTree,
   handleDelete,
   handleRename,
+  disableRightClick = false,
+  disableFileAndFolderAddition = false,
   handleClick = () => {},
 }) => {
   const isFile = leaf && !children;
@@ -24,7 +26,7 @@ const TreeNode = ({
   return (
     <React.Fragment>
       {/* Tree Node */}
-      <ContextMenuTrigger id={id} holdToDisplay={-1}>
+      <ContextMenuTrigger id={id} holdToDisplay={-1} disable={disableRightClick}>
         <div className="treeNode">
           <div className="treeNodeItem">
             <div
@@ -34,7 +36,7 @@ const TreeNode = ({
               <Icon icon={isFile ? file : folder} />
               {module}
             </div>
-            {!isFile && (
+            {!isFile && !disableFileAndFolderAddition && (
               <div className="folderControls">
                 <Icon
                   icon={filePlus}
