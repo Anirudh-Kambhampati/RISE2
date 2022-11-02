@@ -29,7 +29,7 @@ const deleteFromTree = (newTree, id) => {
   [newTree].some(getNode);
 };
 
-const FolderTree = ({ treeData, handleClick, isAdmin=false }) => {
+const FolderTree = ({ treeData, handleClick, isAdmin=false, errorMsg="Provide treeData" }) => {
   const dispatch = useDispatch();
   const [tree, setTree] = useState(treeData);
 
@@ -105,6 +105,10 @@ const FolderTree = ({ treeData, handleClick, isAdmin=false }) => {
     handleRename,
     handleClick,
   };
+
+  if(!treeData || !Object.keys(treeData).length){
+    return <div>{errorMsg}</div>
+  }
 
   return (
     <div>
