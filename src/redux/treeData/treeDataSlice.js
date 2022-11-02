@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState = { 
-    treeData : []
+    adminTreeData : {},
+    userTreeData : {},
 }
 
 const treeDataSlice = createSlice({
@@ -10,13 +11,17 @@ const treeDataSlice = createSlice({
     initialState,
     reducers : {
         setTreeData : (state, {payload}) => {
-            state.treeData = payload
+            state.adminTreeData = payload
+        },
+        setUserTreeData : (state, {payload}) => {
+            state.userTreeData = payload;
         }
     }
 });
 
-export const { setTreeData } = treeDataSlice.actions;
+export const { setTreeData, setUserTreeData } = treeDataSlice.actions;
 
-export const getTreeData = state => state.treeData.treeData
+export const getAdminTreeData = state => state.treeData.adminTreeData;
+export const getUserTreeData = state => state.treeData.userTreeData
 
 export default treeDataSlice.reducer

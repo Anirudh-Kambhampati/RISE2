@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "../../components/Card/Card";
 import ipImg from "../../images/cardIp.png";
-const RightContent = ({ content }) => {
+const RightContent = ({ content={} }) => {
   return (
     <div
       className="mt-4 ml-10"

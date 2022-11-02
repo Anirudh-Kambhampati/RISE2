@@ -29,13 +29,15 @@ const deleteFromTree = (newTree, id) => {
   [newTree].some(getNode);
 };
 
-const FolderTree = ({ treeData, handleClick }) => {
+const FolderTree = ({ treeData, handleClick, isAdmin=false }) => {
   const dispatch = useDispatch();
   const [tree, setTree] = useState(treeData);
 
   useEffect(() => {
-    dispatch(setTreeData(_.cloneDeep(tree)));
-  }, [dispatch, tree])
+    if(isAdmin){
+      dispatch(setTreeData(_.cloneDeep(tree)));
+    }
+  }, [dispatch, tree, isAdmin])
 
   /*===============EVENT HANDLERS STARTS========================== */
   const handleRename = (id) => {
@@ -48,6 +50,7 @@ const FolderTree = ({ treeData, handleClick }) => {
       return;
     }
     renameObj.value.module = response;
+
     const newTree = _.mapDeep(
       tree,
       (item) =>
@@ -75,9 +78,8 @@ const FolderTree = ({ treeData, handleClick }) => {
             module: `New ${itemType}`,
             children: [],
             collapsed: false,
-            grantedAccess: false,
           }
-        : { id: `${Date.now()}`, leaf: true, module: `New ${itemType}`, grantedAccess: false };
+        : { id: `${Date.now()}`, leaf: true, module: `New ${itemType}` };
 
     const newTree = _.mapDeep(tree, (item) => {
       const cloneItem = Object.assign({}, item);

@@ -4,19 +4,17 @@ import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
 import AdminPage from "../pages/AdminPage/AdminPage";
-import UserSidebar from "../pages/UserPage/UserSidebar";
 import LoginPage from "../pages/AuthenticationPages/LoginPage/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import SignUpPage from "../pages/AuthenticationPages/SignUpPage/SignUpPage";
+import UserPage from "../pages/UserPage/UserPage";
 
 const BasicRoutes = ({ loginProps }) => {
   return (
     <Routes>
       <Route path="/" element={<ProtectedRoute {...loginProps} />}>
         <Route index element={<AdminPage />} />
-      </Route>
-      <Route path="/user" element={<ProtectedRoute {...loginProps} />}>
-        <Route index element={<UserSidebar />} />
+        <Route path="/user" element={<UserPage />} />
       </Route>
 
       <Route path="/signup" element={<SignUpPage {...loginProps} />} />

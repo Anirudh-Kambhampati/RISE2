@@ -1,15 +1,33 @@
 import { Form, Field } from "react-final-form";
-import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { getTreeData } from "../../redux/treeData/treeDataSlice";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAdminTreeData, setUserTreeData } from "../../redux/treeData/treeDataSlice";
+import _ from "lodash";
+import deepdash from 'deepdash';
 
+deepdash(_);
 
-const Share = () => {
-    const treeData = useSelector(getTreeData) || {};
-    const submitCallback = useCallback((values,form,complete) => {
-        console.log(values);
+const Share = ({treeDataRole}) => {
+    const dispatch = useDispatch();
+
+    const treeData = useSelector(getAdminTreeData) || {};
+
+    const submitCallback = (values,form,complete) => {
+        const allIds = [];
+        Object.entries(values).forEach(([k, v]) => {
+            if(v.length){
+                allIds.push(...v.concat(k))
+            }
+        } );
+        if(allIds.length){
+            const filteredTree = _.filterDeep(treeData, (item) => {
+                return allIds.includes(item.id);
+           },{childrenPath: 'children'});
+           filteredTree['module'] = treeDataRole || "Un-Titled"
+           dispatch(setUserTreeData(filteredTree))
+        }
         complete();
-    },[]);
+    };
     
     const data = treeData.children || [];
     // console.log(data);
@@ -31,7 +49,7 @@ const Share = () => {
                                 <span style={{color:'#2db3a7'}}>{ item.module }</span>
                                     {item.children.map(elt => {
                                         return(
-                                            <div> 
+                                            <div key={elt.id}> 
                                                 <Field 
                                                     name = { item.id }
                                                     component = "input"

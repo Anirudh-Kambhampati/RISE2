@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import "@progress/kendo-theme-material/dist/all.css";
 import { TileLayout } from "@progress/kendo-react-layout";
 
 import ImagesAnalysed from "./ImagesAnalysed";
 import ImagesNotAnalysed from "./ImagesNotAnalysed";
 import Imgpie from "./pie";
 import TotalViews from "./TotalViews";
+
+import "@progress/kendo-theme-material/dist/all.css";
 
 const initialPositions = [
   {
