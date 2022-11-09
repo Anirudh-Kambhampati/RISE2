@@ -1,30 +1,40 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   folderTree: [],
-  checkboxData: {},
+  userCheckboxData: {},
+  researcherCheckboxData: {},
 };
 
 export const adminSlice = createSlice({
-  name: 'admin',
+  name: "admin",
   initialState,
   reducers: {
     handleFolderTree: (state, { payload }) => {
       state.folderTree = payload;
     },
     updateCheckboxData: (state, { payload }) => {
-      state.checkboxData = { ...state.checkboxData, ...payload };
+      state.userCheckboxData = { ...state.checkboxData, ...payload };
     },
-    handleCheckboxData: (state, { payload }) => {
-      state.checkboxData[payload.name] = payload.checked;
+    handleUserCheckboxData: (state, { payload }) => {
+      state.userCheckboxData[payload.name] = payload.checked;
+    },
+    handleResearcherCheckboxData: (state, { payload }) => {
+      state.researcherCheckboxData[payload.name] = payload.checked;
     },
   },
 });
 
-export const { handleFolderTree, updateCheckboxData, handleCheckboxData } =
-  adminSlice.actions;
+export const {
+  handleFolderTree,
+  updateCheckboxData,
+  handleUserCheckboxData,
+  handleResearcherCheckboxData,
+} = adminSlice.actions;
 
 export const getFolderTree = (state) => state.admin.folderTree;
-export const getCheckboxData = (state) => state.admin.checkboxData;
+export const getUserCheckboxData = (state) => state.admin.userCheckboxData;
+export const getResearcherCheckboxData = (state) =>
+  state.admin.researcherCheckboxData;
 
 export default adminSlice.reducer;
